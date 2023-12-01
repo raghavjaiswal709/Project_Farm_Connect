@@ -74,7 +74,7 @@ const CartPage = () => {
         <div className="row  " >
           <div className="col-md-12 greetings">
             <h1 className="text-center p-2 mb-1  ">
-              {!auth?.user
+              {!auth?.user              
                 ? "Hello Guest"
                 : 
                 `Hello  ${auth?.token && auth?.user?.name}`}

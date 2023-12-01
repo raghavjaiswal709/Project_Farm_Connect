@@ -67,6 +67,10 @@ const ManageCategory = () => {
         }
     }
 
+    useEffect(() =>{
+      getAllCategory();
+  },[]);
+
      //update category
   const handleUpdate = async (e) => {
     e.preventDefault();
