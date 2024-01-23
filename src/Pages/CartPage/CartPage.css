@@ -19,3 +19,21 @@
     justify-content: center;
     align-items: center;
 }
+
+.payment-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 200px;
+}
+
+.productdetails{
+    position: relative;
+    right: -100px;
+}

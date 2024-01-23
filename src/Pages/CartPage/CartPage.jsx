@@ -9,6 +9,7 @@ import { AiFillWarning } from "react-icons/ai";
 import axios from "axios";
 import toast from "react-hot-toast";
 import AllHeader from "../../components/Layout/AllHeader/AllHeader/AllHeader.jsx";
+import DropIn from "braintree-web-drop-in-react";
 // import "../styles/CartStyles.css";
 
 const CartPage = () => {
@@ -18,6 +19,7 @@ const CartPage = () => {
   const [instance, setInstance] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
 
   //total price
   const totalPrice = () => {
@@ -66,6 +68,51 @@ const CartPage = () => {
       setCart(cartData);
     }
   }, []);
+
+  const getToken = async () => {
+    try {
+      const {data} = await axios.get('/api/v1/product/braintree/token')
+      setClientToken(data?.clientToken)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+useEffect(()=>{
+    getToken()
+},[auth?.token])
+
+//handle payments
+
+const handlePayment = async () => {
+  try {
+    setLoading(true);
+    const { nonce } = await instance.requestPaymentMethod();
+    const { data } = await axios.post("/api/v1/product/braintree/payment", {
+      nonce,
+      cart,
+    });
+
+          // Save cart data to MongoDB
+          await saveCartToMongoDB();
+
+    setLoading(false);
+    localStorage.removeItem("cart");
+    setCart([]);
+    navigate("/dashboard/user/orders");
+    toast.success("Payment Completed Successfully ");
+  } catch (error) {
+    console.log(error);
+    setLoading(false);
+  }
+};
+ // Function to save cart data to MongoDB
+  const saveCartToMongoDB = async () => {
+    try {
+      await axios.post("/api/v1/product/orders", { cart });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     // <Layout>
@@ -159,12 +206,13 @@ const CartPage = () => {
                   )}
                 </div>
               )}
+              <div className="payment-box">
               <div className="mt-2">
                 {!clientToken || !auth?.token || !cart?.length ? (
                   ""
                 ) : (
                   <>
-                    <DropIn
+                    <DropIn 
                       options={{
                         authorization: clientToken,
                         paypal: {
@@ -177,12 +225,13 @@ const CartPage = () => {
                     <button
                       className="btn btn-primary"
                       onClick={handlePayment}
-                      disabled={loading || !instance || !auth?.user?.address}
+                      // disabled={loading || !instance}
                     >
                       {loading ? "Processing ...." : "Make Payment"}
                     </button>
                   </>
                 )}
+              </div>
               </div>
             </div>
           </div>

@@ -47,7 +47,7 @@ const ProfileUpdateFarmer = () => {
         // navigate("/LoginPageForFarmer")
         console.log("success");
       } else {
-        setAuth({ ...auth, user: data?.updateUser });
+        setAuth({ ...auth, user: data?.updatedUser });
         let ls = localStorage.getItem("auth");
         ls = JSON.parse(ls);
         ls.user = data.updateUser;
@@ -177,7 +177,7 @@ const ProfileUpdateFarmer = () => {
 
                 <div className="field">
                   <input
-                    required
+                    
                     type="Number"
                     value={role}
                     onChange={(e) => setRole(e.target.value)}

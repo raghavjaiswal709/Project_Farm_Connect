@@ -29,6 +29,7 @@ import ProfileUpdateFarmer from "./Pages/ProfileUpdateFarmer/ProfileUpdateFarmer
 //
 
 import HomepageForWholeseller from "./Pages/HomepageForWholeseller/HomepageForWholeseller.jsx";
+import ViewAcceptedProducts from "./Pages/ViewAcceptedProducts/ViewAcceptedProducts.jsx";
 
 function App() {
   return (
@@ -113,6 +114,10 @@ function App() {
           <Route
             path="/Dashboard/UpdateProfileFarmer"
             element={<ProfileUpdateFarmer />}
+          />
+          <Route
+            path="/Dashboard/agreedProducts"
+            element={<ViewAcceptedProducts />}
           />
         </Routes>
       </BrowserRouter>
