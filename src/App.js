@@ -24,12 +24,11 @@ import ProductDetails from "./Pages/ProductDetails/ProductDetails.jsx";
 import CartPage from "./Pages/CartPage/CartPage.jsx";
 import UpdatePeofileW from "./Pages/UpdatePeofileW/UpdatePeofileW.jsx";
 import ProfileUpdateFarmer from "./Pages/ProfileUpdateFarmer/ProfileUpdateFarmer.jsx";
-// import DisplayHomepageForWholeseller from "./Pages/DisplayHomePageForWholeseller/DisplayHomePageForWholeseller.jsx";
-
-//
 
 import HomepageForWholeseller from "./Pages/HomepageForWholeseller/HomepageForWholeseller.jsx";
 import ViewAcceptedProducts from "./Pages/ViewAcceptedProducts/ViewAcceptedProducts.jsx";
+            <Route path="/LoginPageForFarmer" element={<LoginPageForFarmer />} />
+
 
 function App() {
   return (
@@ -37,88 +36,43 @@ function App() {
       <Toaster />
       <BrowserRouter>
         <Routes>
-          <Route index element={<LandingPage />} />
-          <Route
-            path="/LandingPageRegister"
-            element={<LandingPageRegister />}
-          />
-          <Route path="/LandingPageLogin" element={<LandingPage />} />
-          <Route path="/search" element={<SearchProducts />} />
-          <Route path="/LoginPageForFarmer" element={<LoginPageForFarmer />} />
-          <Route
-            path="/LoginPageForWholeseller"
-            element={<LoginPageForWholeseller />}
-          />
-          <Route
-            path="/RegisterPageForFarmer"
-            element={<RegisterPageForFarmer />}
-          />
-          <Route
-            path="/RegisterPageForWholeseller"
-            element={<RegisterPageForWholeseller />}
-          />
+        <Route path="/LandingPageRegister" element={<LandingPageRegister />} />
+            <Route path="/LandingPageLogin" element={<LandingPage />} />
+            <Route path="/LoginPageForFarmer" element={<LoginPageForFarmer />} />
 
-          <Route path="/Dashboard" element={<PrivateRoute />}>
-            <Route path="FarmerDashboard1" element={<FarmerDashboard1 />} />
-            <Route
-              path="FarmerDashboard1/AddNewProductFarmer"
-              element={<AddProductByFarmer />}
-            />
+          {/* Protect all routes with PrivateRoute */}
+          <Route element={<PrivateRoute />}>
+            <Route index element={<LandingPage />} />
+            
+            <Route path="/search" element={<SearchProducts />} />
+            <Route path="/LoginPageForWholeseller" element={<LoginPageForWholeseller />} />
+            <Route path="/RegisterPageForFarmer" element={<RegisterPageForFarmer />} />
+            <Route path="/RegisterPageForWholeseller" element={<RegisterPageForWholeseller />} />
+
+            {/* Nested routes within PrivateRoute */}
+            <Route path="FarmerDashboard">
+              <Route index element={<FarmerDashboard1 />} />
+              <Route path="AddNewProductFarmer" element={<AddProductByFarmer />} />
+            </Route>
+            <Route path="Dashboard/AddNewProductFarmer" element={<AddProductByFarmer />} />
+            <Route path="/DisplayProductsForFarmer" element={<DisplayProductsForFarmer />} />
+            <Route path="/Dashboard/FarmerDashboard1/viewProducts" element={<ViewProducts />} />
+
+            <Route path="/Dashboard">
+              <Route path="WholesellerDashboard" element={<WholesellerDashboard />} />
+            </Route>
+
+            <Route path="/HomePage" element={<AfterLoginPageCommon />} />
+            <Route path="/ManageCategory" element={<ManageCategory />} />
+            <Route path="/updateProduct/:slug" element={<UpdateProductFarmer />} />
+            <Route path="/HomepageWholeseller" element={<HomepageForWholeseller />} />
+            <Route path="/Dashboard/BoughtProductss" element={<BoughtProducts />} />
+            <Route path="/HomepageWholeseller/product/:slug" element={<ProductDetails />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="Dashboard/UpdateProfile" element={<UpdatePeofileW />} />
+            <Route path="/Dashboard/UpdateProfileFarmer" element={<ProfileUpdateFarmer />} />
+            <Route path="/Dashboard/agreedProducts" element={<ViewAcceptedProducts />} />
           </Route>
-
-          <Route
-            path="Dashboard/AddNewProductFarmer"
-            element={<AddProductByFarmer />}
-          />
-          <Route
-            path="/DisplayProductsForFarmer"
-            element={<DisplayProductsForFarmer />}
-          />
-          <Route
-            path="/Dashboard/FarmerDashboard1/viewProducts"
-            element={<ViewProducts />}
-          />
-
-          <Route path="/Dashboard" element={<WholesellerRoute />}>
-            <Route
-              path="WholesellerDashboard"
-              element={<WholesellerDashboard />}
-            />
-          </Route>
-
-          <Route path="/HomePage" element={<AfterLoginPageCommon />} />
-          <Route path="/HomePage" element={<AfterLoginPageCommon />} />
-
-          <Route path="/ManageCategory" element={<ManageCategory />} />
-          <Route
-            path="/updateProduct/:slug"
-            element={<UpdateProductFarmer />}
-          />
-          <Route
-            path="/HomepageWholeseller"
-            element={<HomepageForWholeseller />}
-          />
-          <Route
-            path="/Dashboard/BoughtProductss"
-            element={<BoughtProducts />}
-          />
-          <Route
-            path="/HomepageWholeseller/product/:slug"
-            element={<ProductDetails />}
-          />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="Dashboard/UpdateProfile" element={<UpdatePeofileW />} />
-
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="Dashboard/UpdateProfile" element={<UpdatePeofileW />} />
-          <Route
-            path="/Dashboard/UpdateProfileFarmer"
-            element={<ProfileUpdateFarmer />}
-          />
-          <Route
-            path="/Dashboard/agreedProducts"
-            element={<ViewAcceptedProducts />}
-          />
         </Routes>
       </BrowserRouter>
     </>
