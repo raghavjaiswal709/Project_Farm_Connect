@@ -11,7 +11,7 @@ import FarmerDashboard1 from "./Pages/FarmersAllPagesAfterLogin/FarmerDashboard1
 import AddProductByFarmer from "./Pages/AddProductByFarmer/AddProductByFarmer";
 import { Toaster } from "react-hot-toast";
 import DisplayProductsForFarmer from "./Pages/DisplayProductsForFarmer/DisplayProductsForFarmer2";
-import PrivateRoute from "./components/Layout/routes/private";
+import PrivateRoute, { RoleBasedRoute, RoleBasedRoutewholeseller } from "./components/Layout/routes/private";
 import WholesellerDashboard from "./Pages/WholesellerDashboard/WholesellerDashboard.jsx";
 import WholesellerRoute from "./components/Layout/routes/WholeSellerRoute.js";
 import AfterLoginPageCommon from "./Pages/AfterLoginPageCommon/AfterLoginPageCommon.jsx";
@@ -39,21 +39,29 @@ function App() {
         <Route path="/LandingPageRegister" element={<LandingPageRegister />} />
             <Route path="/LandingPageLogin" element={<LandingPage />} />
             <Route path="/LoginPageForFarmer" element={<LoginPageForFarmer />} />
+            <Route path="/LoginPageForWholeseller" element={<LoginPageForWholeseller />} />
 
-          {/* Protect all routes with PrivateRoute */}
+            <Route element={<RoleBasedRoute />}>
+            <Route path="/HomePage" element={<AfterLoginPageCommon />} />
+
+              </Route>  
+            <Route element={<RoleBasedRoutewholeseller />}>
+            <Route path="/HomepageWholeseller" element={<HomepageForWholeseller />} />
+
+              </Route>  
+
+
           <Route element={<PrivateRoute />}>
             <Route index element={<LandingPage />} />
             
             <Route path="/search" element={<SearchProducts />} />
-            <Route path="/LoginPageForWholeseller" element={<LoginPageForWholeseller />} />
+           
             <Route path="/RegisterPageForFarmer" element={<RegisterPageForFarmer />} />
             <Route path="/RegisterPageForWholeseller" element={<RegisterPageForWholeseller />} />
 
-            {/* Nested routes within PrivateRoute */}
-            <Route path="FarmerDashboard">
-              <Route index element={<FarmerDashboard1 />} />
+              <Route path="Dashboard/FarmerDashboard1" index element={<FarmerDashboard1 />} />
               <Route path="AddNewProductFarmer" element={<AddProductByFarmer />} />
-            </Route>
+           
             <Route path="Dashboard/AddNewProductFarmer" element={<AddProductByFarmer />} />
             <Route path="/DisplayProductsForFarmer" element={<DisplayProductsForFarmer />} />
             <Route path="/Dashboard/FarmerDashboard1/viewProducts" element={<ViewProducts />} />
@@ -65,7 +73,6 @@ function App() {
             <Route path="/HomePage" element={<AfterLoginPageCommon />} />
             <Route path="/ManageCategory" element={<ManageCategory />} />
             <Route path="/updateProduct/:slug" element={<UpdateProductFarmer />} />
-            <Route path="/HomepageWholeseller" element={<HomepageForWholeseller />} />
             <Route path="/Dashboard/BoughtProductss" element={<BoughtProducts />} />
             <Route path="/HomepageWholeseller/product/:slug" element={<ProductDetails />} />
             <Route path="/cart" element={<CartPage />} />

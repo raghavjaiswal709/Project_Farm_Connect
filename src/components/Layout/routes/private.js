@@ -3,6 +3,8 @@ import { useAuth } from "../../../context/auth";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../../Spinner";
+import {useNavigate } from 'react-router-dom'; // Assuming useAuth and useNavigate are available
+
 
 export default function PrivateRoute() {
   const [ok, setOk] = useState(false);
@@ -29,3 +31,76 @@ export default function PrivateRoute() {
   
 }
 
+export function RoleBasedRoute() {
+  const [ok, setOk] = useState(false);
+  const [auth, setAuth] = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkRole = async () => {
+      const authData = localStorage.getItem('auth');
+      if (authData) {
+        const parsedAuth = JSON.parse(authData);
+        if (parsedAuth.user.role === "0") {
+          setAuth(parsedAuth);
+          setOk(true);
+          navigate('/HomePage');
+        } else if (parsedAuth.user.role === "1") {
+          // User has role 0, prevent login
+          setAuth(null);
+          setOk(false);
+           
+          handleLogout();
+          navigate('/');// Redirect to the desired page, e.g., homepage or login page
+        } 
+      } 
+    };
+
+    checkRole();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth');
+    setAuth(null);
+    // Handle other logout actions (e.g., redirect to login page)
+  };
+
+  return ok ? <Outlet /> : <Spinner />;
+}
+
+export function RoleBasedRoutewholeseller() {
+  const [ok, setOk] = useState(false);
+  const [auth, setAuth] = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkRole = async () => {
+      const authData = localStorage.getItem('auth');
+      if (authData) {
+        const parsedAuth = JSON.parse(authData);
+        if (parsedAuth.user.role === "1") {
+          setAuth(parsedAuth);
+          setOk(true);
+          navigate('/HomepageWholeseller');
+        } else if (parsedAuth.user.role === "0") {
+          // User has role 0, prevent login
+          setAuth(null);
+          setOk(false);
+           
+          handleLogout();
+          navigate('/');// Redirect to the desired page, e.g., homepage or login page
+        } 
+      } 
+    };
+
+    checkRole();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth');
+    setAuth(null);
+    // Handle other logout actions (e.g., redirect to login page)
+  };
+
+  return ok ? <Outlet /> : <Spinner />;
+}
