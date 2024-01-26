@@ -13,6 +13,9 @@
     text-decoration: none;
     
 }
+.loadinga{
+    color: black;
+}
 .BargainBtnSection{
     display: flex;
     flex-wrap: wrap-reverse;

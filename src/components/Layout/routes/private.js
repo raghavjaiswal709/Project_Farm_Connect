@@ -44,7 +44,7 @@ export function RoleBasedRoute() {
         if (parsedAuth.user.role === "0") {
           setAuth(parsedAuth);
           setOk(true);
-          navigate('/HomePage');
+          navigate('/Dashboard/FarmerDashboard1');
         } else if (parsedAuth.user.role === "1") {
           // User has role 0, prevent login
           setAuth(null);

@@ -2,17 +2,15 @@ import React from 'react';
 import "../AllHeader/AllHeader.css";
 import { useAuth } from '../../../../context/auth';
 import toast from "react-hot-toast";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import tractorSVG from "../../../../assets/Screenshot_2023-11-23_173055-removebg-preview (1).png"
 import { useCart } from '../../../../context/Cart';
-import { useNavigate, useLocation } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 const AllHeader = () => {
   const [auth, setAuth] = useAuth();
-  const [cart] = useCart()
+  const [cart] = useCart();
   const navigate = useNavigate();
-
 
   const handleLogout = () => {
     setAuth({
@@ -31,9 +29,10 @@ const AllHeader = () => {
       return "/Dashboard/WholesellerDashboard";
     }
   };
+
   const handleHomeClick = () => {
     if (auth.user?.role === "0") {
-      navigate("/HomePage");
+      navigate("/Dashboard/FarmerDashboard1/viewProducts");
     } else {
       navigate("/HomepageWholeseller");
     }
@@ -44,50 +43,43 @@ const AllHeader = () => {
       <div className="NavbarAllheader">
         {!auth.user && (
           <>
-          <div className='logoDIVVV'>
-          <h1 className='logoTXT'>Farm-Connect</h1>
-          <img className='tractoraaaasvg' src={tractorSVG} alt='tractor'></img>
-          </div>
-          <div className="linkContainerAllHeader">
-          
-
-            <a className="optionAllheader" href="/LandingPageLogin">
-              Login
-            </a>
-            <a className="optionAllheader" href="/LandingPageRegister">
-              Register
-            </a>
-          </div>
+            <div className='logoDIVVV'>
+              <h1 className='logoTXT'>Farm-Connect</h1>
+              <img className='tractoraaaasvg' src={tractorSVG} alt='tractor'></img>
+            </div>
+            <div className="linkContainerAllHeader">
+              <a className="optionAllheader" href="/LandingPageLogin">
+                Login
+              </a>
+              <a className="optionAllheader" href="/LandingPageRegister">
+                Register
+              </a>
+            </div>
           </>
         )}
         {auth.user && (
           <>
-          <div className='logoDIVVV'>
-          <h1 className='logoTXT'>Farm-Connect</h1>
-          <img className='tractoraaaasvg' src={tractorSVG} alt='tractor'></img>
-          </div>
-
+            <div className='logoDIVVV'>
+              <h1 className='logoTXT'>Farm-Connect</h1>
+              <img className='tractoraaaasvg' src={tractorSVG} alt='tractor'></img>
+            </div>
             <div className="linkContainerAllHeader">
-              <button className="optionAllheader"onClick={handleHomeClick}>
-                Home
-              </button>
-              <NavLink
-                className="optionAllheader"
-                to={getDashboardLink()}
-              >
+              {auth.user?.role === "0" ? null : (
+                <button className="optionAllheader" onClick={handleHomeClick}>
+                  Home
+                </button>
+              )}
+              <NavLink className="optionAllheader" to={getDashboardLink()}>
                 Dashboard
               </NavLink>
               {auth.user?.role === "0" ? (
-                <NavLink
-                  className="optionAllheader"
-                  to="/Dashboard/FarmerDashboard1/viewProducts"
-                >
+                <NavLink className="optionAllheader" to="/Dashboard/FarmerDashboard1/viewProducts">
                   All Products
                 </NavLink>
               ) : (
-                <a className="optionAllheader" href="/cart">
+                <NavLink className="optionAllheader" to="/cart">
                   Cart ({cart?.length})
-                </a>
+                </NavLink>
               )}
               <a
                 onClick={handleLogout}

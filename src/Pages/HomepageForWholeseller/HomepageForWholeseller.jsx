@@ -1,59 +1,23 @@
-import AllHeader from "../../components/Layout/AllHeader/AllHeader/AllHeader";
-import nofile from "../../assets/Screenshot_2023-11-07_130533-removebg-preview (1).png";
-import "../HomepageForWholeseller/HomepageForWholeseller.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link, json } from "react-router-dom";
-import MenusFarmer from "../../components/Menus/MenusFarmer/MenusFarmer";
-import "../ViewProducts/ViewProducts.css";
-import { useAuth } from "../../../src/context/auth";
-import { useNavigate, useParams } from "react-router-dom";
-import { Checkbox } from "antd";
+import { Link } from "react-router-dom";
+import { Checkbox, Spin } from "antd";
 import SearchInput from "../../components/SearchInput/SearchInput.js";
 import { useCart } from "../../context/Cart.js";
+import { useNavigate, useParams } from "react-router-dom";
+import AllHeader from "../../components/Layout/AllHeader/AllHeader/AllHeader.jsx";
+
 
 const HomepageForWholeseller = () => {
   const [products, setProducts] = useState([]);
-
-  const [id, setId] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [cart, setCart] = useCart();
+
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [total, setTotal] = useState(0);
-
-  const getSingleProduct = async () => {
-    try {
-      const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`
-      );
-      setTitle(data.product.title);
-      setCategory(data.product.category._id);
-      // setCategories(data.product.categories);
-      setQuantity(data.product.quantity);
-      setId(data.product._id);
-      setDate(data.product.date);
-      setImage(data.product.image);
-      setDiscription(data.product.discription);
-      setAddress(data.product.address);
-      setState(data.product.state);
-      setDistrict(data.product.district);
-      setPrice(data.product.price);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleFilter = (value, id) => {
-    let all = [...checked];
-    if (value) {
-      all.push(id);
-    } else {
-      all = all.filter((c) => c !== id);
-    }
-    setChecked(all);
-  };
+  const [cart, setCart] = useCart();
 
   const getAllCategory = async () => {
     try {
@@ -65,12 +29,18 @@ const HomepageForWholeseller = () => {
   };
 
   useEffect(() => {
-    if (!checked.length) getAllCategory();
-  }, [checked]);
+    getAllCategory();
+  }, []);
 
-  useEffect(() => {
-    if (checked.length) filterproduct();
-  });
+  const handleFilter = (value, id) => {
+    let all = [...checked];
+    if (value) {
+      all.push(id);
+    } else {
+      all = all.filter((c) => c !== id);
+    }
+    setChecked(all);
+  };
 
   const filterproduct = async () => {
     try {
@@ -83,30 +53,10 @@ const HomepageForWholeseller = () => {
     }
   };
 
-  const getAllProducts = async () => {
-    try {
-      const { data } = await axios.get("/api/v1/product/get-product");
-      setProducts(data.products);
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-    }
-  };
+  useEffect(() => {
+    if (checked.length) filterproduct();
+  }, [checked]);
 
-  const handleDelete = async () => {
-    try {
-      // let answer = window.prompt('are you sure you want to delete.?')
-      // if(!answer) return
-      const { data } = await axios.delete(
-        `/api/v1/product/delete-product/${id}`
-      );
-      toast.success("product deleted successfully");
-    } catch (error) {
-      console.log(error);
-      toast.error("error in deleting product");
-    }
-  };
-  //getTOtal COunt
   const getTotal = async () => {
     try {
       const { data } = await axios.get("/api/v1/product/product-count");
@@ -116,9 +66,22 @@ const HomepageForWholeseller = () => {
     }
   };
 
+  const getAllProducts = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get("/api/v1/product/get-product");
+      setProducts(data.products);
+      getTotal();
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getAllProducts();
-    getTotal();
   }, []);
 
   return (
@@ -129,7 +92,6 @@ const HomepageForWholeseller = () => {
         <div className="massContiner">
           <div className="filterContainer">
             <h5>Filter By Category</h5>
-            {/* <SearchInput /> */}
             <div className="d-flex flex-column">
               {categories?.map((c) => (
                 <Checkbox
@@ -147,69 +109,85 @@ const HomepageForWholeseller = () => {
               <SearchInput />
             </div>
 
-            {/* {JSON.stringify(checked,null,4)} */}
-            <div className="d-flex flex-wrap cardsDiv">
-              {products?.map((p) => (
-                <div className="card m-2" style={{ width: "18rem" }}>
-                  <img
-                    src={`/api/v1/product/product-photo/${p._id}`}
-                    className="card-img-top"
-                    style={{ width: "18rem", height: "14rem" }}
-                    alt={p.title}
-                  />
-                  <div className="card-body productcardMainDiv">
-                    <h5 className="card-title cardTitle">{p.title}</h5>
-                    <p className="card-text cardTitle">{p.discription}</p>  
-                    <h3 className="card-text cardTitle">₹{p.price} Per KGs</h3>{" "}
-                     
-                    <section className="BargainBtnSection">
-                      <button href="#" className="BargainBTN">
-                        Bargain
-                      </button>
-                      <button
-                        href="#"
-                        onClick={() => {
-                          setCart([...cart, p]);
-                          localStorage.setItem(
-                            "cart",
-                            JSON.stringify([...cart, p])
-                          );
+            {loading ? (
+              <Spin size="large" />
+            ) : (
+              <div className="d-flex flex-wrap cardsDiv">
+  {products?.map((p) => (
+    <div className="card m-2" style={{ width: "18rem" }} key={p._id}>
+      {/* Add a loading animation or placeholder */}
+      {p.loading ? (
+        <div className="loading-animation loadinga">Loading...</div>
+      ) : (
+        <>
+          <img
+  src={`/api/v1/product/product-photo/${p._id}`}
+  className="card-img-top"
+  style={{ width: "18rem", height: "14rem" }}
+  alt={p.title}
+  onLoad={() => {
+    // Set the loading state to false once the image is loaded
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product._id === p._id ? { ...product, loading: false } : product
+      )
+    );
+  }}
+  onError={() => {
+    // Handle image load error if needed
+  }}
+/>
+{p.loading && (
+  <div className="loading-animation loadinga">
+    Loading... {/* You can replace this with your custom loading animation or spinner */}
+  </div>
+)}
+          <div className="card-body productcardMainDiv">
+            <h5 className="card-title cardTitle">{p.title}</h5>
+            <p className="card-text cardTitle">{p.discription}</p>
+            <h3 className="card-text cardTitle">₹{p.price} Per KGs</h3>
+            <section className="BargainBtnSection">
+              <button href="#" className="BargainBTN">
+                Bargain
+              </button>
+              <button
+                href="#"
+                onClick={() => {
+                  setCart([...cart, p]);
+                  localStorage.setItem(
+                    "cart",
+                    JSON.stringify([...cart, p])
+                  );
+                  toast.success("Item added to cart");
+                }}
+                className="cartBTN"
+              >
+                Cart
+              </button>
+              <button
+                href="#"
+                className="DetailsBTN"
+                onClick={() => navigate(`product/${p.slug}`)}
+              >
+                More Details
+              </button>
+              <button
+                onClick={() => navigate("/cart")}
+                className="BuyBTN"
+              >
+                Buy Now
+              </button>
+            </section>
+          </div>
+        </>
+      )}
+    </div>
+  ))}
+</div>
 
-                          toast.success("Item added to cart");
-                        }}
-                        className="cartBTN"
-                      >
-                        Cart
-                      </button>
-
-                      <button
-                        href="#"
-                        className="DetailsBTN"
-                        onClick={() => navigate(`product/${p.slug}`)}
-                      >
-                        More Details
-                      </button>
-                      <button
-                        onClick={() => navigate("/cart")}
-                        className="BuyBTN"
-                      >
-                        Buy Now
-                      </button>
-                    </section>
-                  </div>
-                </div>
-              ))}
-            </div>
+            )}
           </div>
         </div>
-
-        {/* <section className="headingAfterlogin">
-          <h1>Nothing to show here yet</h1>
-        </section>
-  
-        <section className="afterloginNoFilePng">
-          <img className="noFilePng" src={nofile} alt="" />
-        </section> */}
       </div>
     </div>
   );
