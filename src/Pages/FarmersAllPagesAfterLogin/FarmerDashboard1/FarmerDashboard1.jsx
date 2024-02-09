@@ -24,9 +24,15 @@ const FarmerDashboard1 = () => {
             <a className="loginas-buttDash" href="#">
               View all product
             </a>
-            <a className="loginas-buttDash" href="#">
-              View accepted product
+            <a className="loginas-buttDash" href="/bargainAction">
+              Bargain Requests
             </a>
+            {/* <a className="loginas-buttDash" href="#">
+              View accepted product
+            </a> */}
+            {/* <a className="loginas-buttDash" href="/bargainResfake">
+              View product
+            </a> */}
             <a
               className="loginas-buttDash"
               href="/Dashboard/UpdateProfileFarmer"

@@ -96,89 +96,36 @@ const AfterLoginPageCommon = () => {
     getAllBargainRequests();
   }, []);
 
-  return (
-    <div>
-      <AllHeader />
-      <MenusFarmer />
-      <div className="maincontainerviewproduct">
-        <h2 className="productHeading2">All Products List</h2>
-        <div className="d-flex flex-wrap cardsDiv">
-          {products?.map((p) => (
-            <div className="card m-2" style={{ width: '18rem' }} key={p._id}>
-              {/* Existing product display code */}
-              <img
-                src={`/api/v1/product/product-photo/${p._id}`}
-                className="card-img-top"
-                style={{ width: '18rem', height: '14rem' }}
-                alt={p.title}
-              />
-              <div className="card-body productcardMainDiv">
-                <h5 className="card-title cardTitle">{p.title}</h5>
-                <p className="card-text cardTitle">{p.discription}</p>
-                <h3 className="card-text cardTitle">₹{p.price} Per KGs</h3>
-                {/* Bargain Request button */}
-                {/* <button
-                  className="btn btn-warning ms-4"
-                  onClick={() => {
-                    navigate(`/bargain-request/${p._id}`);
-                    getBargainRequestsForProduct(p._id);
-                  }}
-                >
-                  Bargain Request
-                </button> */}
-                {/* Update and Delete buttons */}
-                <Link
-                  to={`/updateProduct/${p.slug}`}
-                  className="product-link btn btn-primary ms-4 updateButton"
-                >
-                  UPDATE
-                </Link>
-                <button
-                  className="btn btn-danger ms-4 updateButton"
-                  onClick={() => handleDelete(p._id)}
-                >
-                  DELETE
-                </button>
-              </div>
-            </div>
-          ))}
+  const BargainAction = () => {
+    return (
+      <div >
+        <AllHeader />
+        <MenusFarmer />
+        <div style={{display:'flex',marginTop:'50px', justifyContent:'center',alignItems:'center',flexWrap:'wrap', flexDirection:'column',}}>
+        <div style={{display:'flex', justifyContent:'center', flexDirection:'column',width:'60%',gap:'40px' }}>
+        <h1>Bargain Requests</h1>
+        <div style={{}}>
+        {bargainRequests.length > 0 ? (
+          bargainRequests.map((bargain) => (
+            <BargainRes
+              key={bargain._id}
+              bargain={bargain}
+              onRespond={getBargainRequests}
+            />
+          ))
+        ) : (
+          <section className="headingAfterlogin">
+            <h1>Nothing to show here yet</h1>
+          </section>
+        )}
         </div>
       </div>
+      </div>
+      </div>
+    );
+  };
 
-      {/* Display Bargain Requests
-      {products.length > 0 && (
-        <div>
-          <h1>Bargain Requests</h1>
-          {bargainRequests.length > 0 ? (
-            bargainRequests.map((bargain) => (
-              <BargainRes
-                key={bargain._id}
-                bargain={bargain}
-                onRespond={getBargainRequests}
-              />
-            ))
-          ) : (
-            <section className="headingAfterlogin">
-              <h1>Nothing to show here yet</h1>
-            </section>
-          )}
-        </div>
-      )} */}
-
-      {/* Additional sections */}
-      {products.length === 0 && (
-        <section className="headingAfterlogin">
-          <h1>Nothing to show here yet</h1>
-        </section>
-      )}
-
-      {products.length === 0 && (
-        <section className="afterloginNoFilePng">
-          <img className="noFilePng" src={nofile} alt="" />
-        </section>
-      )}
-    </div>
-  );
+  return <BargainAction />;
 };
 
 export default AfterLoginPageCommon;

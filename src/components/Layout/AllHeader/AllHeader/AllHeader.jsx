@@ -78,7 +78,8 @@ const AllHeader = () => {
                 </NavLink>
               ) : (
                 <NavLink className="optionAllheader" to="/cart">
-                  Cart ({cart?.length})
+                  Cart
+                   {/* ({cart?.length}) */}
                 </NavLink>
               )}
               <a

@@ -13,7 +13,7 @@ import DropIn from "braintree-web-drop-in-react";
 // import "../styles/CartStyles.css";
 
 const CartPage = () => {
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
   const [cart, setCart] = useCart();
   const [clientToken, setClientToken] = useState("");
   const [instance, setInstance] = useState("");
@@ -21,7 +21,6 @@ const CartPage = () => {
   const navigate = useNavigate();
   
 
-  //total price
   const totalPrice = () => {
     try {
       let total = 0;
@@ -36,7 +35,6 @@ const CartPage = () => {
       console.log(error);
     }
   };
-  //detele item
   const removeCartItem = (pid) => {
     try {
       let myCart = [...cart];
@@ -49,34 +47,33 @@ const CartPage = () => {
     }
   };
 
-  //get payment gateway token
-  // const getToken = async () => {
-  //   try {
-  //     const { data } = await axios.get("/api/v1/product/braintree/token");
-  //     setClientToken(data?.clientToken);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getToken();
-  // }, [auth?.token]);
+  const getToken = async () => {
+    try {
+      const { data } = await axios.get("/api/v1/product/braintree/token");
+      setClientToken(data?.clientToken);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getToken();
+  }, [auth?.token]);
 
   useEffect(() => {
     const cartData = JSON.parse(localStorage.getItem('cart'));
     if (cartData) {
       setCart(cartData);
     }
-  }, []);
+  }, [setCart]);
 
-  const getToken = async () => {
-    try {
-      const {data} = await axios.get('/api/v1/product/braintree/token')
-      setClientToken(data?.clientToken)
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const getToken = async () => {
+  //   try {
+  //     const {data} = await axios.get('/api/v1/product/braintree/token')
+  //     setClientToken(data?.clientToken)
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 useEffect(()=>{
     getToken()
 },[auth?.token])
@@ -92,7 +89,6 @@ const handlePayment = async () => {
       cart,
     });
 
-          // Save cart data to MongoDB
           await saveCartToMongoDB();
 
     setLoading(false);

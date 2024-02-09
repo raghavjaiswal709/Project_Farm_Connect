@@ -27,6 +27,9 @@ import ProfileUpdateFarmer from "./Pages/ProfileUpdateFarmer/ProfileUpdateFarmer
 
 import HomepageForWholeseller from "./Pages/HomepageForWholeseller/HomepageForWholeseller.jsx";
 import ViewAcceptedProducts from "./Pages/ViewAcceptedProducts/ViewAcceptedProducts.jsx";
+import BargainRes from "./components/Layout/bargainRes/BargainRes.jsx";
+import ProductList from "./Pages/bargainRespondpage/ProductList.jsx";
+import BargainAction from "./Pages/bargainACTIONFarmer/BargainAction.jsx";
             <Route path="/LoginPageForFarmer" element={<LoginPageForFarmer />} />
 
 
@@ -71,6 +74,9 @@ function App() {
             </Route>
 
             <Route path="/HomePage" element={<AfterLoginPageCommon />} />
+            <Route path="/bargainRes" element={<BargainRes />} />
+            <Route path="/bargainResfake" element={<ProductList />} />
+            <Route path="/bargainAction" element={<BargainAction />} />
             <Route path="/ManageCategory" element={<ManageCategory />} />
             <Route path="/updateProduct/:slug" element={<UpdateProductFarmer />} />
             <Route path="/Dashboard/BoughtProductss" element={<BoughtProducts />} />
