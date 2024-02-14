@@ -7,7 +7,6 @@ const App = () => {
   const [bargains, setBargains] = useState([]);
 
   useEffect(() => {
-    // Fetch the list of bargains from the backend
     axios.get('/api/v1/bargain/get-product')
       .then(response => {
         setBargains(response.data);
@@ -18,7 +17,6 @@ const App = () => {
   }, []);
 
   const handleBargainResponse = () => {
-    // Refresh the list of bargains after responding
     axios.get('http://localhost:3001/bargains')
       .then(response => {
         setBargains(response.data);

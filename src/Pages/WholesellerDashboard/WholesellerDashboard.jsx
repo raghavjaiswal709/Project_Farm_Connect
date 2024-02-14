@@ -12,6 +12,9 @@ const WholesellerDashboard = () => {
           <a className="loginas-buttDashManage" href="/Dashboard/UpdateProfile">
             Your Profile
           </a>
+          <a className="loginas-buttDashManage" href="/Dashboard/BargainStatus">
+            Bargain status
+          </a>
           <a
             className="loginas-buttDashManage"
             href="/Dashboard/AddNewProductFarmer"

@@ -8,6 +8,7 @@ import MenusFarmer from '../../components/Menus/MenusFarmer/MenusFarmer';
 import BargainRes from '../../components/Layout/bargainRes/BargainRes'; // Import the BargainResponse component
 import { useNavigate } from 'react-router-dom';
 import nofile from "../../assets/Screenshot_2023-11-07_130533-removebg-preview (1).png"; // Provide the correct path to your nofile image
+import "../bargainACTIONFarmer/bargainAction.css"
 
 const AfterLoginPageCommon = () => {
   const [products, setProducts] = useState([]);
@@ -101,15 +102,16 @@ const AfterLoginPageCommon = () => {
       <div >
         <AllHeader />
         <MenusFarmer />
-        <div style={{display:'flex',marginTop:'50px', justifyContent:'center',alignItems:'center',flexWrap:'wrap', flexDirection:'column',}}>
-        <div style={{display:'flex', justifyContent:'center', flexDirection:'column',width:'60%',gap:'40px' }}>
+        <div className='main-container'>
+        <div >
         <h1>Bargain Requests</h1>
-        <div style={{}}>
+        <div className='Cards-Container'>
         {bargainRequests.length > 0 ? (
           bargainRequests.map((bargain) => (
             <BargainRes
               key={bargain._id}
               bargain={bargain}
+              bargainId={bargain._id}
               onRespond={getBargainRequests}
             />
           ))

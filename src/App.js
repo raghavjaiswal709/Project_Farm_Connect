@@ -30,6 +30,7 @@ import ViewAcceptedProducts from "./Pages/ViewAcceptedProducts/ViewAcceptedProdu
 import BargainRes from "./components/Layout/bargainRes/BargainRes.jsx";
 import ProductList from "./Pages/bargainRespondpage/ProductList.jsx";
 import BargainAction from "./Pages/bargainACTIONFarmer/BargainAction.jsx";
+import RequestedProducts from "./Pages/WholesellerBargainStatus/WholesellerBargainStatus.jsx";
             <Route path="/LoginPageForFarmer" element={<LoginPageForFarmer />} />
 
 
@@ -78,6 +79,7 @@ function App() {
             <Route path="/bargainResfake" element={<ProductList />} />
             <Route path="/bargainAction" element={<BargainAction />} />
             <Route path="/ManageCategory" element={<ManageCategory />} />
+            <Route path="/Dashboard/BargainStatus" element={<RequestedProducts />} />
             <Route path="/updateProduct/:slug" element={<UpdateProductFarmer />} />
             <Route path="/Dashboard/BoughtProductss" element={<BoughtProducts />} />
             <Route path="/HomepageWholeseller/product/:slug" element={<ProductDetails />} />

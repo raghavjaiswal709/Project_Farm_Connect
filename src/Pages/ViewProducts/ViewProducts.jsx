@@ -12,6 +12,17 @@ import nofile from "../../assets/Screenshot_2023-11-07_130533-removebg-preview (
 const AfterLoginPageCommon = () => {
   const [products, setProducts] = useState([]);
   const [bargainRequests, setBargainRequests] = useState([]);
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [id, setId] = useState('');
+  const [date, setDate] = useState('');
+  const [image, setImage] = useState('');
+  const [discription, setDiscription] = useState('');
+  const [address, setAddress] = useState('');
+  const [state, setState] = useState('');
+  const [district, setDistrict] = useState('');
+  const [price, setPrice] = useState('');
   const navigate = useNavigate();
 
   const getSingleProduct = async (slug) => {
